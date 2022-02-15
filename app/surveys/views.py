@@ -1,5 +1,9 @@
+from datetime import datetime
+
+from django.db.models import Q
 from rest_framework import viewsets, mixins, permissions
 from rest_framework.generics import get_object_or_404
+
 from .models import Survey, Question, Answer, Choice
 from .serializers import (
     SurveySerializer, QuestionSerializer, AnswerSerializer,
@@ -7,8 +11,6 @@ from .serializers import (
     AnswerOneChoiceSerializer, AnswerMultipleChoiceSerializer,
     ChoiceSerializer,
 )
-from datetime import datetime
-from django.db.models import Q
 
 
 class SurveyViewSet(viewsets.ModelViewSet):
@@ -65,6 +67,7 @@ class AnswerCreateViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             pk=self.kwargs['question_pk'],
             survey__id=self.kwargs['id'],
         )
+
         if question.question_type == 'text':
             return AnswerOneTextSerializer
         elif question.question_type == 'single':

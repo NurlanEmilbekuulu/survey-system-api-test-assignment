@@ -5,7 +5,7 @@ SINGLE_CHOICE = 'single'
 MULTIPLE_CHOICE = 'multiple'
 
 QUESTION_TYPES = (
-    (TEXT, 'text'),
+    (TEXT, 'Text'),
     (SINGLE_CHOICE, 'Select single'),
     (MULTIPLE_CHOICE, 'Select multiple')
 )

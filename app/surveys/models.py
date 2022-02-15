@@ -8,7 +8,6 @@ from .consts import QUESTION_TYPES, TEXT
 
 class Survey(models.Model):
     """ Survey """
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, db_index=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     publish_date = models.DateField("Publication date", default=date.today, editable=False)
@@ -51,7 +50,7 @@ class Answer(models.Model):
     """ Answer model """
     author = models.ForeignKey(to='auth.User', on_delete=models.CASCADE, null=True)
     question = models.ForeignKey(to='surveys.Question', on_delete=models.CASCADE, related_name="answers")
-    multiple_choice = models.ManyToManyField(Choice, null=True)
+    multiple_choice = models.ManyToManyField(Choice)
     single_choice = models.ForeignKey(
         Choice,
         null=True,

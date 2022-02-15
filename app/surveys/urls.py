@@ -19,7 +19,11 @@ router.register(
     views.ChoiceViewSet,
     basename='choices'
 )
-router.register('active_surveys', views.ActiveSurveyListViewSet)
+router.register(
+    'active_surveys',
+    views.ActiveSurveyListViewSet,
+    basename='active_surveys'
+)
 router.register(
     'surveys/(?P<id>\d+)/questions/(?P<question_pk>\d+)/answers',
     views.AnswerCreateViewSet,

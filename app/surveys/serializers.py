@@ -10,13 +10,14 @@ from .models import Question, Answer, Survey, Choice
 class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
-        fields = ['name', 'description', 'publish_date', 'expire_date']
+        fields = '__all__'
 
 
 class ChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Choice
-        fields = ['id', 'name']
+        fields = ['id', 'text']
+        read_only_fields = ('id',)
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -80,7 +81,7 @@ class UserFilteredPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
 
 
 class AnswerOneChoiceSerializer(serializers.ModelSerializer):
-    one_choice = UserFilteredPrimaryKeyRelatedField(
+    single_choice = UserFilteredPrimaryKeyRelatedField(
         many=False,
         queryset=Choice.objects.all()
     )
@@ -91,11 +92,11 @@ class AnswerOneChoiceSerializer(serializers.ModelSerializer):
 
 
 class AnswerMultipleChoiceSerializer(serializers.ModelSerializer):
-    many_choice = UserFilteredPrimaryKeyRelatedField(
+    multiple_choice = UserFilteredPrimaryKeyRelatedField(
         many=True,
         queryset=Choice.objects.all()
     )
 
     class Meta:
-        fields = ['many_choice']
+        fields = ['multiple_choice']
         model = Answer
