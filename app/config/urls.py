@@ -5,7 +5,7 @@ from .swagger import urlpatterns as doc_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('surveys.urls'), name='api'),
+    path('', include('surveys.urls')),
 ]
 
 urlpatterns += doc_urls

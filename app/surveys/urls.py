@@ -36,7 +36,8 @@ router.register(
 )
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', views.api_root_view, name='index'),
+    path('api/', include(router.urls), name='api-root'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -2,7 +2,10 @@ from datetime import datetime
 
 from django.db.models import Q
 from rest_framework import viewsets, mixins, permissions
+from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from .models import Survey, Question, Answer, Choice
 from .serializers import (
@@ -11,6 +14,14 @@ from .serializers import (
     AnswerOneChoiceSerializer, AnswerMultipleChoiceSerializer,
     ChoiceSerializer,
 )
+
+
+@api_view(['GET'])
+def api_root_view(request, format=None):
+    """API endpoint """
+    return Response({
+        'api': reverse('api-root', request=request, format=format),
+    })
 
 
 class SurveyViewSet(viewsets.ModelViewSet):
