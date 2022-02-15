@@ -23,43 +23,42 @@ class Survey(models.Model):
         return str(self.name)
 
 
-class Response(models.Model):
-    """
-    A Response object is a collection of questions and answers with a
-    unique interview uuid.
-    """
-
-    created = models.DateTimeField(verbose_name='Creation date', auto_now_add=True)
-    updated = models.DateTimeField(verbose_name='Update date', auto_now=True)
-    survey = models.ForeignKey(to='surveys.Survey', on_delete=models.CASCADE, related_name="responses")
-    user = models.ForeignKey(to='auth.User', on_delete=models.SET_NULL, null=True, blank=True)
-
-    class Meta:
-        verbose_name = 'Response'
-        verbose_name_plural = 'Responses'
-
-    def __str__(self):
-        return f'Response #{self.pk}'
-
-
 class Question(models.Model):
     """ Question model """
     survey = models.ForeignKey(to='surveys.Survey', on_delete=models.CASCADE, related_name="questions")
     text = models.TextField(verbose_name='Text')
-    type = models.CharField(verbose_name='Type', max_length=200, choices=QUESTION_TYPES, default=TEXT)
+    question_type = models.CharField(verbose_name='Question type', max_length=200, choices=QUESTION_TYPES, default=TEXT)
 
     class Meta:
         verbose_name = 'Question'
         verbose_name_plural = 'Questions'
 
 
+class Choice(models.Model):
+    """ Choice model """
+    text = models.TextField(verbose_name='Answer option')
+    question = models.ForeignKey(
+        to='surveys.Question',
+        on_delete=models.CASCADE,
+        related_name='choices'
+    )
+
+    def __str__(self):
+        return str(self.text)
+
+
 class Answer(models.Model):
-    """ Base Answer model """
+    """ Answer model """
+    author = models.ForeignKey(to='auth.User', on_delete=models.CASCADE, null=True)
     question = models.ForeignKey(to='surveys.Question', on_delete=models.CASCADE, related_name="answers")
-    response = models.ForeignKey(to='surveys.Response', on_delete=models.CASCADE, related_name="answers")
-    created = models.DateTimeField(verbose_name='Creation date', auto_now_add=True)
-    updated = models.DateTimeField(verbose_name='Update date', auto_now=True)
-    body = models.TextField(verbose_name='Content', blank=True, null=True)
+    multiple_choice = models.ManyToManyField(Choice, null=True)
+    single_choice = models.ForeignKey(
+        Choice,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="answers_single_choice"
+    )
+    text = models.TextField(null=True)
 
     class Meta:
         verbose_name = 'Answer'
