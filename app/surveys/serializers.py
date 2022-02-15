@@ -4,7 +4,7 @@
 
 from rest_framework import serializers
 
-from .models import Question, Answer
+from .models import Question, Answer, Survey
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -26,3 +26,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         """ pass """
         model = Question
         fields = ['id', 'text', 'answer_type', 'answer_options']
+
+
+class SurveyListSerializer(serializers.HyperlinkedModelSerializer):
+    """ Survey results list serializer """
+
+    class Meta:
+        """ meta """
+        model = Survey
+        fields = ['name', 'description', 'publish_date', 'expire_date']
