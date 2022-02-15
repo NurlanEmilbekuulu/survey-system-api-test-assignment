@@ -44,9 +44,8 @@ class Response(models.Model):
 
 class Question(models.Model):
     """ Question model """
+    survey = models.ForeignKey(to='surveys.Survey', on_delete=models.CASCADE, related_name="questions")
     text = models.TextField(verbose_name='Text')
-    survey = models.ForeignKey(to='surveys.Survey', on_delete=models.CASCADE, verbose_name='Survey',
-                               related_name="questions")
     type = models.CharField(verbose_name='Type', max_length=200, choices=QUESTION_TYPES, default=TEXT)
 
     class Meta:
@@ -54,21 +53,14 @@ class Question(models.Model):
         verbose_name_plural = 'Questions'
 
 
-class BaseAnswer(models.Model):
+class Answer(models.Model):
     """ Base Answer model """
     question = models.ForeignKey(to='surveys.Question', on_delete=models.CASCADE, related_name="answers")
     response = models.ForeignKey(to='surveys.Response', on_delete=models.CASCADE, related_name="answers")
     created = models.DateTimeField(verbose_name='Creation date', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Update date', auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class TextAnswer(BaseAnswer):
-    """ Text Answer model """
     body = models.TextField(verbose_name='Content', blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Text answer for question'
-        verbose_name_plural = 'Text answers for question'
+        verbose_name = 'Answer'
+        verbose_name_plural = 'Answers'
