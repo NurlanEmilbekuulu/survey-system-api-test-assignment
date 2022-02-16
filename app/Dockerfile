@@ -25,5 +25,6 @@ RUN chmod +x /usr/src/app/entrypoint.sh
 # copy project
 COPY . .
 
+CMD gunicorn -b 0.0.0.0:$PORT config.wsgi:application
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
